@@ -1,0 +1,11 @@
+{
+  "ignore": [
+    ".git",
+    ".gitignore",
+    "client-manifest.json",
+    "node_modules/*",
+    "nodemon.json"
+  ],
+  "verbose": false,
+  "watch": ["./**/*.*"]
+}

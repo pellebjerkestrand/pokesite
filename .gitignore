@@ -1,0 +1,7 @@
+.DS_Store
+client-manifest.json
+dist
+dist-*
+!dist-location.js
+local.settings.json
+node_modules
