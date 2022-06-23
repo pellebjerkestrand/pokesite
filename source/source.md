@@ -14,6 +14,9 @@ npm run init
 # Get dependencies
 npm ci
 
+# Run the storage emulator in a separate terminal
+npm run storage
+
 # Build, watch, start server
 npm run dev
 ```
