@@ -1,5 +1,4 @@
 import { camelCase } from "camel-case";
-import { paramCase } from "param-case";
 
 type QueueBaseBinding<
   Direction = "in" | "out",
@@ -14,22 +13,30 @@ type QueueBaseBinding<
 
 type QueueInBinding = QueueBaseBinding<"in", "queueTrigger">;
 
-export const queueInBinding = (name: string): QueueInBinding => ({
-  type: "queueTrigger",
-  direction: "in",
-  name: camelCase(name),
-  queueName: paramCase(name),
-  connection: "AzureWebJobsStorage",
-});
+export const queueInBinding = (name: string): QueueInBinding => {
+  const sanitizedName = camelCase(name);
+
+  return {
+    type: "queueTrigger",
+    direction: "in",
+    name: sanitizedName,
+    queueName: sanitizedName,
+    connection: "AzureWebJobsStorage",
+  };
+};
 
 type QueueOutBinding = QueueBaseBinding<"out", "queue">;
 
-export const queueOutBinding = (name: string): QueueOutBinding => ({
-  type: "queue",
-  direction: "out",
-  name: camelCase(name),
-  queueName: paramCase(name),
-  connection: "AzureWebJobsStorage",
-});
+export const queueOutBinding = (name: string): QueueOutBinding => {
+  const sanitizedName = camelCase(name);
+
+  return {
+    type: "queue",
+    direction: "out",
+    name: sanitizedName,
+    queueName: sanitizedName,
+    connection: "AzureWebJobsStorage",
+  };
+};
 
 export type QueueBindings = [QueueInBinding, QueueOutBinding];

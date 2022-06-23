@@ -52,7 +52,6 @@
     "@redis/client": "^1.1.0",
     "camel-case": "^4.1.2",
     "node-fetch": "^3.2.5",
-    "param-case": "^3.0.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "serialize-javascript": "^6.0.0",
