@@ -4,10 +4,10 @@ import { queueName } from "./response-cache-queue-helpers";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 
 import { Home } from "./home.page";
-import { getAllPokemon, GetAllPokemonOutcome, PokemonSource } from "./pokemon";
+import { getProps, GetAllPokemonOutcome, PokemonSource } from "./home.data";
 
 export const run: HtmlFunction = async (context) => {
-  const pokemon = await getAllPokemon();
+  const pokemon = await getProps();
 
   if (pokemon.outcome === GetAllPokemonOutcome.failure) {
     return {
@@ -23,12 +23,7 @@ export const run: HtmlFunction = async (context) => {
     context.bindings[queueName] = Object.keys(pokemon.value);
   }
 
-  const result = renderHtml(Home, "Pokémon", {
-    list: Object.values(pokemon.value).flatMap((list) =>
-      list.map(({ name }) => name)
-    ),
-    title: "Pokémon",
-  });
+  const result = renderHtml(Home, "Pokémon", pokemon.value);
 
   switch (result.outcome) {
     case RenderHtmlOutcome.Failure: {

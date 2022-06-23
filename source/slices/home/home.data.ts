@@ -1,6 +1,7 @@
 import { JsonDecoder, type FromDecoder } from "ts.data.json";
 
 import { get, getFromCache, GetOutcome, set } from "../../server/data";
+import type { Home } from "./home.page";
 import { resultsDecoder, resourceListDecoder } from "./resource-list";
 
 export enum GetAllPokemonOutcome {
@@ -57,11 +58,20 @@ const getCachedPokemon = async (): Promise<Collection | undefined> => {
   }
 };
 
-export const getAllPokemon = async (): Promise<
+type HomeProps = Parameters<typeof Home>[0];
+
+const toHomeProps = (collection: Collection): HomeProps => ({
+  title: "Pokémon",
+  list: Object.values(collection).flatMap((list) =>
+    list.map(({ name }) => name)
+  ),
+});
+
+export const getProps = async (): Promise<
   | {
       outcome: GetAllPokemonOutcome.success;
       source: PokemonSource;
-      value: Collection;
+      value: HomeProps;
     }
   | {
       outcome: GetAllPokemonOutcome.failure;
@@ -72,7 +82,7 @@ export const getAllPokemon = async (): Promise<
     return {
       outcome: GetAllPokemonOutcome.success,
       source: PokemonSource.pageCache,
-      value: cachedPokemon,
+      value: toHomeProps(cachedPokemon),
     };
   }
 
@@ -81,7 +91,7 @@ export const getAllPokemon = async (): Promise<
     return {
       outcome: GetAllPokemonOutcome.success,
       source: PokemonSource.pageCache,
-      value: freshPokemon,
+      value: toHomeProps(freshPokemon),
     };
   }
 
