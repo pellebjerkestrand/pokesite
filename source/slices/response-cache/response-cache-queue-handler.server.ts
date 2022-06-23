@@ -2,8 +2,8 @@ import fetch from "node-fetch";
 
 import { read, ReadOutcome, write, WriteOutcome } from "../../server/cache";
 import { isUrl } from "../../server/is-url";
+import { resourceListDecoder } from "../../server/resource-list";
 import type { QueueHandlerFunction } from "../../server/queue-function.types";
-import { resourceListDecoder } from "./resource-list";
 
 export const run: QueueHandlerFunction = async (_, message) => {
   if (typeof message !== "string") {
@@ -26,7 +26,12 @@ export const run: QueueHandlerFunction = async (_, message) => {
     );
   }
 
-  const setOutcome = await write(message, await response.text());
+  const decodedBody = resourceListDecoder.decode(await response.json());
+  if (!decodedBody.isOk()) {
+    throw new Error(`Response body is not OK. ${decodedBody.error}`);
+  }
+
+  const setOutcome = await write(message, decodedBody.value);
   if (setOutcome === WriteOutcome.failure) {
     throw new Error(`Could not set. ${message}`);
   }

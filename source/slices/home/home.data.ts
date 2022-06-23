@@ -2,8 +2,11 @@ import { JsonDecoder, type FromDecoder } from "ts.data.json";
 
 import { get, GetOutcome } from "../../server/http";
 import { read, ReadOutcome, write } from "../../server/cache";
+import {
+  resultsDecoder,
+  resourceListDecoder,
+} from "../../server/resource-list";
 import type { Home } from "./home.page";
-import { resultsDecoder, resourceListDecoder } from "./resource-list";
 
 const collectionDecoder = JsonDecoder.dictionary(resultsDecoder, "Collection");
 

@@ -2,6 +2,8 @@ import { JsonDecoder } from "ts.data.json";
 
 const { array, number, object, optional, string } = JsonDecoder;
 
+// NOTE: See https://pokeapi.co/docs/v2#resource-listspagination-section
+
 const resultDecoder = object(
   {
     name: string,

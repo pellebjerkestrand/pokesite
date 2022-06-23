@@ -1,10 +1,9 @@
 import type { HtmlFunction } from "../../server/html-function.types";
-
-import { queueName } from "./response-cache-queue-helpers";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
+import { queueName } from "../../server/response-cache-queue-helpers";
 
-import { Home } from "./home.page";
 import { getProps, GetAllPokemonOutcome, PokemonSource } from "./home.data";
+import { Home } from "./home.page";
 
 export const run: HtmlFunction = async (context) => {
   const pokemon = await getProps();
