@@ -1,55 +1,36 @@
-import { FromDecoder, JsonDecoder } from "ts.data.json";
+import { type FromDecoder } from "ts.data.json";
 
 import { get, GetOutcome } from "../../server/data";
-
-const { array, number, object, optional, string } = JsonDecoder;
-
-const resultDecoder = object(
-  {
-    name: string,
-    url: string,
-  },
-  "Result"
-);
-
-const resultsDecoder = array(resultDecoder, "Results");
-
-const resourceListDecoder = object(
-  {
-    count: number,
-    next: optional(string),
-    previous: optional(string),
-    results: resultsDecoder,
-  },
-  "ResourceList"
-);
+import { resultsDecoder, resourceListDecoder } from "./resource-list";
 
 export enum GetAllPokemonOutcome {
   failure = "failure",
   success = "success",
 }
 
+type Collection = Record<string, FromDecoder<typeof resultsDecoder>>;
+
 export const getAllPokemon = async (
   url: string = "https://pokeapi.co/api/v2/pokemon",
-  collection: FromDecoder<typeof resultsDecoder> = []
-): Promise<FromDecoder<typeof resultsDecoder>> => {
+  collection: Collection = {}
+): Promise<Collection> => {
   const result = await get(url, resourceListDecoder);
 
   switch (result.outcome) {
     case GetOutcome.failure: {
-      return [];
+      return {};
     }
     case GetOutcome.invalidKey: {
-      return [];
+      return {};
     }
     case GetOutcome.success: {
-      const collectedPokemon = collection.concat(result.value.results);
+      collection[url] = result.value.results;
 
       if (result.value.next) {
-        return getAllPokemon(result.value.next, collectedPokemon);
+        return getAllPokemon(result.value.next, collection);
       }
 
-      return collectedPokemon;
+      return collection;
     }
   }
 };

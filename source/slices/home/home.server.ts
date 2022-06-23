@@ -1,17 +1,22 @@
 import type { HtmlFunction } from "../../server/html-function.types";
 
+import { queueName } from "../../server/pokemon-queue-helper";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 
 import { Home } from "./home.page";
 import { getAllPokemon } from "./pokemon";
 
-export const run: HtmlFunction = async () => {
+export const run: HtmlFunction = async (context) => {
   const pokemon = await getAllPokemon();
 
   const result = renderHtml(Home, "Home", {
-    list: pokemon.map(({ name }) => name),
+    list: Object.values(pokemon).flatMap((list) =>
+      list.map(({ name }) => name)
+    ),
     title: "Home",
   });
+
+  context.bindings[queueName] = Object.keys(pokemon);
 
   switch (result.outcome) {
     case RenderHtmlOutcome.Failure: {

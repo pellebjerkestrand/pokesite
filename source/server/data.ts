@@ -2,14 +2,15 @@ import fetch from "node-fetch";
 import { createClient } from "@redis/client";
 import type { FromDecoder, JsonDecoder } from "ts.data.json";
 import type { JsonValue } from "type-fest";
-import { URL } from "url";
+
+import { isUrl } from "./is-url";
 
 const redis = {
   _client: undefined,
   get client(): ReturnType<typeof createClient> {
     if (!this._client) {
       this._client = createClient(
-        process.env.REDIS ? { url: process.env.Redis } : undefined
+        process.env.REDIS ? { url: process.env.REDIS } : undefined
       );
 
       this._client.on("error", (error) => {
@@ -23,15 +24,6 @@ const redis = {
 
     return this._client;
   },
-};
-
-const isUrl = (input: string) => {
-  try {
-    new URL(input);
-    return true;
-  } catch {
-    return false;
-  }
 };
 
 const tryParse = (input: string) => {
@@ -48,7 +40,7 @@ export enum GetOutcome {
   success = "success",
 }
 
-export const get = async <T>(
+export const getFromCache = async <T>(
   key: string,
   decoder: JsonDecoder.Decoder<T>
 ): Promise<
@@ -79,6 +71,29 @@ export const get = async <T>(
     }
   }
 
+  return {
+    outcome: GetOutcome.failure,
+  };
+};
+
+export const get = async <T>(
+  key: string,
+  decoder: JsonDecoder.Decoder<T>
+): Promise<
+  | {
+      outcome: GetOutcome.success;
+      key: string;
+      value: FromDecoder<typeof decoder>;
+    }
+  | {
+      outcome: Exclude<GetOutcome, GetOutcome.success>;
+    }
+> => {
+  const cacheResult = await getFromCache(key, decoder);
+  if (cacheResult.outcome === GetOutcome.success) {
+    return cacheResult;
+  }
+
   const response = await fetch(key);
   if (!response.ok) {
     return {
@@ -106,6 +121,7 @@ export enum SetOutcome {
 }
 
 export const set = async (key: string, value: JsonValue) => {
-  const result = await redis.client.set(key, JSON.stringify(value));
+  const data = typeof value === "string" ? value : JSON.stringify(value);
+  const result = await redis.client.set(key, data);
   return result ? SetOutcome.success : SetOutcome.failure;
 };
