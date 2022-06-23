@@ -1,13 +1,15 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": ["es2019"],
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strictNullChecks": true
   },
+  "display": "Base",
   "exclude": ["node_modules"]
 }

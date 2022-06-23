@@ -1,7 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "es2021",
     "types": ["node"]
   },
+  "display": "Node 16",
   "extends": "./tsconfig.base.json",
   "include": ["slices/**/*.api.ts", "slices/**/*.server.ts"]
 }

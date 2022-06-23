@@ -5,15 +5,18 @@ import type { JsonValue } from "type-fest";
 
 import { isUrl } from "./is-url";
 
-const redis = {
+const redis: {
+  _client: ReturnType<typeof createClient> | undefined;
+  client: ReturnType<typeof createClient>;
+} = {
   _client: undefined,
-  get client(): ReturnType<typeof createClient> {
+  get client() {
     if (!this._client) {
       this._client = createClient(
         process.env.REDIS ? { url: process.env.REDIS } : undefined
       );
 
-      this._client.on("error", (error) => {
+      this._client.on("error", (error: unknown) => {
         console.error(error);
       });
     }
