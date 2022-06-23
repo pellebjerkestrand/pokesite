@@ -105,6 +105,10 @@ const getPokemon = async (
 const toPokemonProps = (
   pokemon: FromDecoder<typeof pokemonDecoder>
 ): PokemonProps => ({
+  image:
+    pokemon.sprites.front_shiny ??
+    pokemon.sprites.front_female ??
+    pokemon.sprites.front_default,
   name: pokemon.name,
   title: pokemon.name,
 });

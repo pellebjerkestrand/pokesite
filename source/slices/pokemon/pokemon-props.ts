@@ -1,9 +1,10 @@
 import { type FromDecoder, JsonDecoder } from "ts.data.json";
 
-const { object, string } = JsonDecoder;
+const { object, optional, string } = JsonDecoder;
 
 export const pokemonPropsDecoder = object(
   {
+    image: optional(string),
     name: string,
     title: string,
   },
