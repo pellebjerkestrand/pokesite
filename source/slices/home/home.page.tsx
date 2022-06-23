@@ -8,11 +8,11 @@ export const Home: React.FC<Home> = ({ list, title }) => (
   <main className="home">
     <Title text={title} />
     {list.length ? (
-      <div>
+      <ul>
         {list.map((item) => (
-          <div key={item}>{item}</div>
+          <li key={item}>{item}</li>
         ))}
-      </div>
+      </ul>
     ) : null}
   </main>
 );

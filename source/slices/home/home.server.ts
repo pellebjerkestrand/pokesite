@@ -9,11 +9,11 @@ import { getAllPokemon } from "./pokemon";
 export const run: HtmlFunction = async (context) => {
   const pokemon = await getAllPokemon();
 
-  const result = renderHtml(Home, "Home", {
+  const result = renderHtml(Home, "Pokémon", {
     list: Object.values(pokemon).flatMap((list) =>
       list.map(({ name }) => name)
     ),
-    title: "Home",
+    title: "Pokémon",
   });
 
   context.bindings[queueName] = Object.keys(pokemon);
