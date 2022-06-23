@@ -3,9 +3,15 @@ import type { HtmlFunction } from "../../server/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 
 import { Home } from "./home.page";
+import { getAllPokemon } from "./pokemon";
 
 export const run: HtmlFunction = async () => {
-  const result = renderHtml(Home, "Home", { title: "Home" });
+  const pokemon = await getAllPokemon();
+
+  const result = renderHtml(Home, "Home", {
+    list: pokemon.map(({ name }) => name),
+    title: "Home",
+  });
 
   switch (result.outcome) {
     case RenderHtmlOutcome.Failure: {
