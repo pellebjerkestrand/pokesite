@@ -5,7 +5,7 @@ import { read, ReadOutcome, write } from "../../server/cache";
 import {
   resultsDecoder,
   resourceListDecoder,
-} from "../../server/resource-list";
+} from "../../server/resource-list-helpers";
 import type { Home } from "./home.page";
 
 const collectionDecoder = JsonDecoder.dictionary(resultsDecoder, "Collection");

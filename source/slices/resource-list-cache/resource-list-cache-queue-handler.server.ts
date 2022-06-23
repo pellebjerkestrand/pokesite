@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 
 import { read, ReadOutcome, write, WriteOutcome } from "../../server/cache";
 import { isUrl } from "../../server/is-url";
-import { resourceListDecoder } from "../../server/resource-list";
+import { resourceListDecoder } from "../../server/resource-list-helpers";
 import type { QueueHandlerFunction } from "../../server/queue-function.types";
 
 export const run: QueueHandlerFunction = async (_, message) => {

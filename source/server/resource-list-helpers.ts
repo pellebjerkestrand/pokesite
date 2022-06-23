@@ -1,6 +1,9 @@
+import { camelCase } from "camel-case";
 import { JsonDecoder } from "ts.data.json";
 
 const { array, number, object, optional, string } = JsonDecoder;
+
+export const queueName = camelCase("resourceList");
 
 // NOTE: See https://pokeapi.co/docs/v2#resource-listspagination-section
 

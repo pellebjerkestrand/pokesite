@@ -1,6 +1,6 @@
 import type { HtmlFunction } from "../../server/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
-import { queueName } from "../../server/response-cache-queue-helpers";
+import { queueName } from "../../server/resource-list-helpers";
 
 import { getProps, GetAllPokemonOutcome, PokemonSource } from "./home.data";
 import { Home } from "./home.page";
