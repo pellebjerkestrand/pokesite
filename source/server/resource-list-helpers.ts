@@ -7,22 +7,22 @@ export const queueName = camelCase("resourceList");
 
 // NOTE: See https://pokeapi.co/docs/v2#resource-listspagination-section
 
-const resultDecoder = object(
+const resourceDecoder = object(
   {
     name: string,
     url: string,
   },
-  "Result"
+  "Resource"
 );
 
-export const resultsDecoder = array(resultDecoder, "Results");
+export const resourcesDecoder = array(resourceDecoder, "Resources");
 
 export const resourceListDecoder = object(
   {
     count: number,
     next: optional(string),
     previous: optional(string),
-    results: resultsDecoder,
+    results: resourcesDecoder,
   },
   "ResourceList"
 );
