@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-import { getFromCache, GetOutcome, set, SetOutcome } from "../../server/data";
+import { read, ReadOutcome, write, WriteOutcome } from "../../server/cache";
 import { isUrl } from "../../server/is-url";
 import type { QueueHandlerFunction } from "../../server/queue-function.types";
 import { resourceListDecoder } from "./resource-list";
@@ -14,8 +14,8 @@ export const run: QueueHandlerFunction = async (_, message) => {
     throw new Error(`Message is not an URL. ${message}`);
   }
 
-  const cacheResponse = await getFromCache(message, resourceListDecoder);
-  if (cacheResponse.outcome === GetOutcome.success) {
+  const cacheResponse = await read(message, resourceListDecoder);
+  if (cacheResponse.outcome === ReadOutcome.success) {
     return;
   }
 
@@ -26,8 +26,8 @@ export const run: QueueHandlerFunction = async (_, message) => {
     );
   }
 
-  const setOutcome = await set(message, await response.text());
-  if (setOutcome === SetOutcome.failure) {
+  const setOutcome = await write(message, await response.text());
+  if (setOutcome === WriteOutcome.failure) {
     throw new Error(`Could not set. ${message}`);
   }
 };

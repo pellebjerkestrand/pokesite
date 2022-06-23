@@ -1,18 +1,9 @@
 import { JsonDecoder, type FromDecoder } from "ts.data.json";
 
-import { get, getFromCache, GetOutcome, set } from "../../server/data";
+import { get, GetOutcome } from "../../server/http";
+import { read, ReadOutcome, write } from "../../server/cache";
 import type { Home } from "./home.page";
 import { resultsDecoder, resourceListDecoder } from "./resource-list";
-
-export enum GetAllPokemonOutcome {
-  failure = "failure",
-  success = "success",
-}
-
-export enum PokemonSource {
-  pageCache = "pageCache",
-  pokeApi = "pokeApi",
-}
 
 const collectionDecoder = JsonDecoder.dictionary(resultsDecoder, "Collection");
 
@@ -27,8 +18,7 @@ const getFreshPokemon = async (
   const result = await get(url, resourceListDecoder);
 
   switch (result.outcome) {
-    case GetOutcome.failure:
-    case GetOutcome.invalidKey: {
+    case GetOutcome.failure: {
       return;
     }
     case GetOutcome.success: {
@@ -38,21 +28,20 @@ const getFreshPokemon = async (
         return getFreshPokemon(result.value.next, collection);
       }
 
-      await set(cacheKey, collection);
+      await write(cacheKey, collection);
       return collection;
     }
   }
 };
 
 const getCachedPokemon = async (): Promise<Collection | undefined> => {
-  const result = await getFromCache(cacheKey, collectionDecoder);
+  const result = await read(cacheKey, collectionDecoder);
 
   switch (result.outcome) {
-    case GetOutcome.failure:
-    case GetOutcome.invalidKey: {
+    case ReadOutcome.failure: {
       return;
     }
-    case GetOutcome.success: {
+    case ReadOutcome.success: {
       return result.value;
     }
   }
@@ -66,6 +55,16 @@ const toHomeProps = (collection: Collection): HomeProps => ({
     list.map(({ name }) => name)
   ),
 });
+
+export enum GetAllPokemonOutcome {
+  failure = "failure",
+  success = "success",
+}
+
+export enum PokemonSource {
+  pageCache = "pageCache",
+  pokeApi = "pokeApi",
+}
 
 export const getProps = async (): Promise<
   | {

@@ -1,9 +1,6 @@
-import fetch from "node-fetch";
 import { createClient } from "@redis/client";
 import type { FromDecoder, JsonDecoder } from "ts.data.json";
 import type { JsonValue } from "type-fest";
-
-import { isUrl } from "./is-url";
 
 const redis: {
   _client: ReturnType<typeof createClient> | undefined;
@@ -37,37 +34,30 @@ const tryParse = (input: string) => {
   }
 };
 
-export enum GetOutcome {
+export enum ReadOutcome {
   failure = "failure",
-  invalidKey = "invalidKey",
   success = "success",
 }
 
-export const getFromCache = async <T>(
+export const read = async <T>(
   key: string,
   decoder: JsonDecoder.Decoder<T>
 ): Promise<
   | {
-      outcome: GetOutcome.success;
+      outcome: ReadOutcome.success;
       key: string;
       value: FromDecoder<typeof decoder>;
     }
   | {
-      outcome: Exclude<GetOutcome, GetOutcome.success>;
+      outcome: Exclude<ReadOutcome, ReadOutcome.success>;
     }
 > => {
-  if (!isUrl) {
-    return {
-      outcome: GetOutcome.invalidKey,
-    };
-  }
-
   const rawData = await redis.client.get(key);
   if (rawData) {
     const decodedData = decoder.decode(tryParse(rawData));
     if (decodedData.isOk()) {
       return {
-        outcome: GetOutcome.success,
+        outcome: ReadOutcome.success,
         key,
         value: decodedData.value,
       };
@@ -75,56 +65,17 @@ export const getFromCache = async <T>(
   }
 
   return {
-    outcome: GetOutcome.failure,
+    outcome: ReadOutcome.failure,
   };
 };
 
-export const get = async <T>(
-  key: string,
-  decoder: JsonDecoder.Decoder<T>
-): Promise<
-  | {
-      outcome: GetOutcome.success;
-      key: string;
-      value: FromDecoder<typeof decoder>;
-    }
-  | {
-      outcome: Exclude<GetOutcome, GetOutcome.success>;
-    }
-> => {
-  const cacheResult = await getFromCache(key, decoder);
-  if (cacheResult.outcome === GetOutcome.success) {
-    return cacheResult;
-  }
-
-  const response = await fetch(key);
-  if (!response.ok) {
-    return {
-      outcome: GetOutcome.failure,
-    };
-  }
-
-  const decodedResponse = decoder.decode(await response.json());
-  if (decodedResponse.isOk()) {
-    return {
-      outcome: GetOutcome.success,
-      key,
-      value: decodedResponse.value,
-    };
-  }
-
-  return {
-    outcome: GetOutcome.failure,
-  };
-};
-
-export enum SetOutcome {
+export enum WriteOutcome {
   failure = "failure",
   success = "success",
 }
 
-export const set = async (key: string, value: JsonValue) => {
+export const write = async (key: string, value: JsonValue) => {
   const data = typeof value === "string" ? value : JSON.stringify(value);
   const result = await redis.client.set(key, data);
-  return result ? SetOutcome.success : SetOutcome.failure;
+  return result ? WriteOutcome.success : WriteOutcome.failure;
 };
