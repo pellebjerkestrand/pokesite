@@ -3,12 +3,15 @@ import { JsonDecoder, type FromDecoder } from "ts.data.json";
 import { get, GetOutcome } from "../../server/http";
 import { read, ReadOutcome, write } from "../../server/cache";
 import {
-  resultsDecoder,
+  resourcesDecoder,
   resourceListDecoder,
 } from "../../server/resource-list-helpers";
 import type { Home } from "./home.page";
 
-const collectionDecoder = JsonDecoder.dictionary(resultsDecoder, "Collection");
+const collectionDecoder = JsonDecoder.dictionary(
+  resourcesDecoder,
+  "Collection"
+);
 
 type Collection = FromDecoder<typeof collectionDecoder>;
 
