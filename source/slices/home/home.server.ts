@@ -1,14 +1,16 @@
 import type { HtmlFunction } from "../../server/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
-import { queueName } from "../../server/resource-list-helpers";
+import { queueName as resourceListQueueName } from "../../server/resource-list-queue-name";
 
-import { getProps, GetAllPokemonOutcome, PokemonSource } from "./home.data";
+import { getProps, GetPropsOutcome, PropsSource } from "./home-data";
+import { homeQueueName } from "./home-keys";
+import { toMessage } from "./home-queue";
 import { Home } from "./home.page";
 
 export const run: HtmlFunction = async (context) => {
-  const pokemon = await getProps();
+  const props = await getProps();
 
-  if (pokemon.outcome === GetAllPokemonOutcome.failure) {
+  if (props.outcome === GetPropsOutcome.failure) {
     return {
       body: "<p>Oh, dear. Something went wrong when getting Pokémon.</p>",
       headers: {
@@ -18,11 +20,18 @@ export const run: HtmlFunction = async (context) => {
     };
   }
 
-  if (pokemon.source === PokemonSource.pokeApi) {
-    context.bindings[queueName] = Object.keys(pokemon.value);
+  if (props.resources.length) {
+    context.bindings[resourceListQueueName] = props.resources;
   }
 
-  const result = renderHtml(Home, "Pokémon", pokemon.value);
+  if (props.source === PropsSource.fresh) {
+    context.bindings[homeQueueName] = toMessage(
+      context.invocationId,
+      props.value
+    );
+  }
+
+  const result = renderHtml(Home, "Pokémon", props.value);
 
   switch (result.outcome) {
     case RenderHtmlOutcome.Failure: {

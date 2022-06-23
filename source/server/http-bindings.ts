@@ -10,7 +10,7 @@ type HttpMethod =
   | "trace"
   | "update";
 
-type HttpInBinding = {
+export type HttpInBinding = {
   authLevel: "anonymous" | "function";
   direction: "in";
   methods: HttpMethod[];
@@ -34,7 +34,7 @@ export const httpInBinding = (
   binding: Partial<HttpInBinding> & Pick<HttpInBinding, "route">
 ): HttpInBinding => Object.assign({}, httpInBindingDefaults, binding);
 
-type HttpOutBinding = {
+export type HttpOutBinding = {
   type: "http";
   direction: "out";
   name: string;
@@ -50,5 +50,3 @@ export const httpOutBinding = (name?: string): HttpOutBinding =>
   name
     ? Object.assign({}, httpOutBindingDefaults, { name })
     : httpOutBindingDefaults;
-
-export type HttpBindings = [HttpInBinding, HttpOutBinding];

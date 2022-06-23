@@ -2,6 +2,8 @@ import { createClient } from "@redis/client";
 import type { FromDecoder, JsonDecoder } from "ts.data.json";
 import type { JsonValue } from "type-fest";
 
+import { tryParse } from "./try-parse";
+
 const redis: {
   _client: ReturnType<typeof createClient> | undefined;
   client: ReturnType<typeof createClient>;
@@ -26,20 +28,21 @@ const redis: {
   },
 };
 
-const tryParse = (input: string) => {
-  try {
-    return JSON.parse(input);
-  } catch {
-    return;
-  }
-};
-
 export enum ReadOutcome {
   failure = "failure",
   success = "success",
 }
 
+export enum Namespace {
+  pageProps = "page-props",
+  resourceList = "resource-list",
+}
+
+const compoundKey = (namespace: Namespace, key: string) =>
+  `${namespace}:${key}`;
+
 export const read = async <T>(
+  namespace: Namespace,
   key: string,
   decoder: JsonDecoder.Decoder<T>
 ): Promise<
@@ -52,7 +55,7 @@ export const read = async <T>(
       outcome: Exclude<ReadOutcome, ReadOutcome.success>;
     }
 > => {
-  const rawData = await redis.client.get(key);
+  const rawData = await redis.client.get(compoundKey(namespace, key));
   if (rawData) {
     const decodedData = decoder.decode(tryParse(rawData));
     if (decodedData.isOk()) {
@@ -74,8 +77,14 @@ export enum WriteOutcome {
   success = "success",
 }
 
-export const write = async (key: string, value: JsonValue) => {
-  const data = typeof value === "string" ? value : JSON.stringify(value);
-  const result = await redis.client.set(key, data);
+export const write = async <T extends JsonValue>(
+  namespace: Namespace,
+  key: string,
+  value: T
+) => {
+  const result = await redis.client.set(
+    compoundKey(namespace, key),
+    JSON.stringify(value)
+  );
   return result ? WriteOutcome.success : WriteOutcome.failure;
 };

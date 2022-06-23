@@ -1,4 +1,9 @@
-import type { HttpBindings } from "./http-bindings";
-import type { QueueBindings } from "./queue-bindings";
+import type { HttpInBinding, HttpOutBinding } from "./http-bindings";
+import type { QueueInBinding, QueueOutBinding } from "./queue-bindings";
 
-export type Bindings = (HttpBindings[number] | QueueBindings[number])[];
+export type Bindings = (
+  | HttpInBinding
+  | HttpOutBinding
+  | QueueInBinding
+  | QueueOutBinding
+)[];

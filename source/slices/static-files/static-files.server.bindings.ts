@@ -1,10 +1,7 @@
-import {
-  type HttpBindings,
-  httpInBinding,
-  httpOutBinding,
-} from "../../server/http-bindings";
+import type { Bindings } from "../../server/function-bindings.types";
+import { httpInBinding, httpOutBinding } from "../../server/http-bindings";
 
-export const bindings: HttpBindings = [
+export const bindings: Bindings = [
   httpInBinding({ route: "/static-files/{filename}" }),
   httpOutBinding(),
 ];

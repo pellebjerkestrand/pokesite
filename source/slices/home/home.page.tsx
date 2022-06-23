@@ -2,9 +2,9 @@ import React from "react";
 
 import { Title } from "../../components/title";
 
-type Home = { list: string[]; title: string };
+import type { HomeProps } from "./home-props";
 
-export const Home: React.FC<Home> = ({ list, title }) => (
+export const Home: React.FC<HomeProps> = ({ list, title }) => (
   <main className="home">
     <Title text={title} />
     {list.length ? (

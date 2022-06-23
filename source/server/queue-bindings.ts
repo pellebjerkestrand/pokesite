@@ -11,7 +11,7 @@ type QueueBaseBinding<
   type: Type;
 };
 
-type QueueInBinding = QueueBaseBinding<"in", "queueTrigger">;
+export type QueueInBinding = QueueBaseBinding<"in", "queueTrigger">;
 
 export const queueInBinding = (name: string): QueueInBinding => {
   const sanitizedName = camelCase(name);
@@ -25,7 +25,7 @@ export const queueInBinding = (name: string): QueueInBinding => {
   };
 };
 
-type QueueOutBinding = QueueBaseBinding<"out", "queue">;
+export type QueueOutBinding = QueueBaseBinding<"out", "queue">;
 
 export const queueOutBinding = (name: string): QueueOutBinding => {
   const sanitizedName = camelCase(name);
@@ -38,5 +38,3 @@ export const queueOutBinding = (name: string): QueueOutBinding => {
     connection: "AzureWebJobsStorage",
   };
 };
-
-export type QueueBindings = [QueueInBinding, QueueOutBinding];
