@@ -61,7 +61,6 @@ export const get = async <T>(
       outcome: Exclude<GetOutcome, GetOutcome.success>;
     }
 > => {
-  console.debug("[GET]", key);
   if (!isUrl) {
     return {
       outcome: GetOutcome.invalidKey,
@@ -69,7 +68,6 @@ export const get = async <T>(
   }
 
   const rawData = await redis.client.get(key);
-  console.debug("[RAW DATA]", rawData);
   if (rawData) {
     const decodedData = decoder.decode(tryParse(rawData));
     if (decodedData.isOk()) {
@@ -88,19 +86,14 @@ export const get = async <T>(
     };
   }
 
-  console.debug("[FETCH OK]", key);
-
   const decodedResponse = decoder.decode(await response.json());
   if (decodedResponse.isOk()) {
-    // TODO: Message to set
     return {
       outcome: GetOutcome.success,
       key,
       value: decodedResponse.value,
     };
   }
-
-  console.debug("[DECODER ERRORS]", decodedResponse.error);
 
   return {
     outcome: GetOutcome.failure,
