@@ -1,4 +1,6 @@
 .DS_Store
+azurite/*
+!azurite/azurite.md
 client-manifest.json
 dist
 dist-*

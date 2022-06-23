@@ -32,6 +32,7 @@
     "@types/serialize-javascript": "^5.0.2",
     "autoprefixer": "^10.4.7",
     "azure-functions-core-tools": "^4.0.4483",
+    "azurite": "^3.17.1",
     "esbuild": "^0.14.39",
     "esbuild-plugin-import-glob": "^0.1.1",
     "esbuild-plugin-manifest": "^0.5.0",
