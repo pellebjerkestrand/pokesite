@@ -2,7 +2,7 @@ import type { HtmlFunction } from "../../server/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 import { queueName as resourceListQueueName } from "../../server/resource-list-queue-name";
 
-import { getProps, GetPropsOutcome, PropsSource } from "./home-data";
+import { getProps, GetPropsOutcome } from "./home-data";
 import { homeQueueName } from "./home-keys";
 import { toMessage } from "./home-queue";
 import { Home } from "./home.page";
@@ -21,14 +21,11 @@ export const run: HtmlFunction = async (context) => {
   }
 
   if (props.resources.length) {
+    context.bindings[homeQueueName] = toMessage({
+      id: context.invocationId,
+      props: props.value,
+    });
     context.bindings[resourceListQueueName] = props.resources;
-  }
-
-  if (props.source === PropsSource.fresh) {
-    context.bindings[homeQueueName] = toMessage(
-      context.invocationId,
-      props.value
-    );
   }
 
   const result = renderHtml(Home, "Pokémon", props.value);

@@ -35,6 +35,7 @@ export enum ReadOutcome {
 
 export enum Namespace {
   pageProps = "page-props",
+  pokemonResource = "pokemon-resource",
   resourceList = "resource-list",
 }
 

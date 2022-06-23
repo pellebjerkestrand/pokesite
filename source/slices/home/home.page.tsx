@@ -10,7 +10,9 @@ export const Home: React.FC<HomeProps> = ({ list, title }) => (
     {list.length ? (
       <ul>
         {list.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={item}>
+            <a href={`/${item}`}>{item}</a>
+          </li>
         ))}
       </ul>
     ) : null}

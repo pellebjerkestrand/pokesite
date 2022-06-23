@@ -56,11 +56,6 @@ const getCachedProps = async (): Promise<HomeProps | undefined> => {
   }
 };
 
-export enum PropsSource {
-  cache = "cache",
-  fresh = "fresh",
-}
-
 export enum GetPropsOutcome {
   failure = "failure",
   success = "success",
@@ -70,7 +65,6 @@ export const getProps = async (): Promise<
   | {
       outcome: GetPropsOutcome.success;
       resources: string[];
-      source: PropsSource;
       value: HomeProps;
     }
   | {
@@ -82,7 +76,6 @@ export const getProps = async (): Promise<
     return {
       outcome: GetPropsOutcome.success,
       resources: [],
-      source: PropsSource.cache,
       value: cachedProps,
     };
   }
@@ -92,7 +85,6 @@ export const getProps = async (): Promise<
     return {
       outcome: GetPropsOutcome.success,
       resources: Object.keys(pokemon),
-      source: PropsSource.fresh,
       value: toHomeProps(pokemon),
     };
   }

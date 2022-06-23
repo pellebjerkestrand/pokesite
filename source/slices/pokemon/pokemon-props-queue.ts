@@ -2,12 +2,12 @@ import { type FromDecoder, JsonDecoder } from "ts.data.json";
 import type { JsonValue } from "type-fest";
 
 import { tryParse } from "../../server/try-parse";
-import { homePropsDecoder } from "./home-props";
+import { pokemonPropsDecoder } from "./pokemon-props";
 
 const messageDecoder = JsonDecoder.object(
   {
     id: JsonDecoder.string,
-    props: homePropsDecoder,
+    props: pokemonPropsDecoder,
   },
   "Message"
 );
