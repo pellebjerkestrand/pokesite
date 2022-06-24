@@ -18,6 +18,8 @@ Files matching `*.api.ts` and `*.server.ts` are treated as implementations. Use 
 
 Files matching `*.bindings.ts` are treated as bindings. These files result in the JSON files that the runtime requires.
 
+See [../azure-functions](../azure-functions) and [../azure-functions/azure-functions.md](../azure-functions/azure-functions.md) for more about the types and helpers for the Azure Functions runtime.
+
 ### API Function
 
 Used for endpoints that return JSON and are meant to be used as an API by the client application.
