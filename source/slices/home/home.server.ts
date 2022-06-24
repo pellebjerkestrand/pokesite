@@ -28,7 +28,7 @@ export const run: HtmlFunction = async (context) => {
     context.bindings[resourceListQueueName] = props.resources;
   }
 
-  const result = renderHtml(Home, "Pokémon", props.value);
+  const result = renderHtml(Home, "Pokésite", props.value);
 
   switch (result.outcome) {
     case RenderHtmlOutcome.Failure: {

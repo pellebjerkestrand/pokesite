@@ -31,7 +31,7 @@ export const run: HtmlFunction<{ name: string }> = async (context, request) => {
 
   const result = renderHtml(
     Pokemon,
-    `Pokémon | ${request.params.name}`,
+    `Pokésite | ${request.params.name}`,
     props.value
   );
 

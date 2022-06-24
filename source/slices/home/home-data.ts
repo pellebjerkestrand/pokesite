@@ -11,7 +11,7 @@ type ResourceLists = Record<
 >;
 
 const toHomeProps = (lists: ResourceLists): HomeProps => ({
-  title: "Pokémon",
+  title: "Pokésite",
   list: Object.values(lists).flatMap((list) =>
     list.results.map(({ name }) => name)
   ),
