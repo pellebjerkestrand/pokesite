@@ -11,6 +11,9 @@ nvm use
 # Make sure you have a local settings file
 npm run init
 
+# A Redis URL needs to be the value of the REDIS setting
+# redis[s]://[[username][:password]@][host][:port][/db-number]
+
 # Get dependencies
 npm ci
 

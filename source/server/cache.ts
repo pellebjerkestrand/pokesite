@@ -11,10 +11,11 @@ const redis: {
   _client: undefined,
   get client() {
     if (!this._client) {
-      this._client = createClient(
-        process.env.REDIS ? { url: process.env.REDIS } : undefined
-      );
-
+      const url = process.env.REDIS;
+      if (!url) {
+        throw new Error('Missing required environment variable "REDIS".');
+      }
+      this._client = createClient({ url });
       this._client.on("error", (error: unknown) => {
         console.error(error);
       });
