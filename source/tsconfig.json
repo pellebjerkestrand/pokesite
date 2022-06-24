@@ -5,10 +5,12 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": ["es2019"],
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "es2019"
   },
   "display": "Base",
   "exclude": ["node_modules"]
