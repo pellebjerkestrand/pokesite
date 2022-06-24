@@ -3,7 +3,7 @@ import { promises as fsp } from "fs";
 import path from "path";
 import { URL } from "url";
 
-import type { FileFunction } from "../../server/file-function.types";
+import type { FileFunction } from "../../azure-functions/file-function.types";
 
 // NOTE: Since there's no static file trigger,
 // which there absolutely should be, we have to make our own.

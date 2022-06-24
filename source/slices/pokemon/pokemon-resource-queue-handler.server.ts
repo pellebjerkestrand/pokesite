@@ -8,7 +8,7 @@ import {
   WriteOutcome,
 } from "../../server/cache";
 import { isUrl } from "../../server/is-url";
-import type { QueueHandlerFunction } from "../../server/queue-function.types";
+import type { QueueHandlerFunction } from "../../azure-functions/queue-function.types";
 import { pokemonDecoder } from "./pokemon-data";
 
 export const run: QueueHandlerFunction = async (_, message) => {

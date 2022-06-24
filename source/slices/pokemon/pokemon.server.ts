@@ -1,4 +1,4 @@
-import { HtmlFunction } from "../../server/html-function.types";
+import { HtmlFunction } from "../../azure-functions/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 import { getProps, GetPropsOutcome } from "./pokemon-data";
 import {

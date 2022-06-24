@@ -9,7 +9,7 @@ import {
 } from "../../server/cache";
 import { isUrl } from "../../server/is-url";
 import { resourceListDecoder } from "../../server/resource-list";
-import type { QueueHandlerFunction } from "../../server/queue-function.types";
+import type { QueueHandlerFunction } from "../../azure-functions/queue-function.types";
 
 export const run: QueueHandlerFunction = async (_, message) => {
   if (typeof message !== "string") {

@@ -1,5 +1,5 @@
 import { Namespace, write } from "../../server/cache";
-import type { QueueHandlerFunction } from "../../server/queue-function.types";
+import type { QueueHandlerFunction } from "../../azure-functions/queue-function.types";
 import { pokemonPropsCacheKey } from "./pokemon-keys";
 import { fromMessage, FromMessageOutcome } from "./pokemon-props-queue";
 

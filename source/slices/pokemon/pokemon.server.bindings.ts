@@ -1,6 +1,9 @@
-import type { Bindings } from "../../server/function-bindings.types";
-import { httpInBinding, httpOutBinding } from "../../server/http-bindings";
-import { queueOutBinding } from "../../server/queue-bindings";
+import type { Bindings } from "../../azure-functions/function-bindings.types";
+import {
+  httpInBinding,
+  httpOutBinding,
+} from "../../azure-functions/http-bindings";
+import { queueOutBinding } from "../../azure-functions/queue-bindings";
 import {
   pokemonPropsQueueName,
   pokemonResourceQueueName,

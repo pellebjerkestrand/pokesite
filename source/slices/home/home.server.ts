@@ -1,4 +1,4 @@
-import type { HtmlFunction } from "../../server/html-function.types";
+import type { HtmlFunction } from "../../azure-functions/html-function.types";
 import { renderHtml, RenderHtmlOutcome } from "../../server/render-html";
 import { queueName as resourceListQueueName } from "../../server/resource-list-queue-name";
 

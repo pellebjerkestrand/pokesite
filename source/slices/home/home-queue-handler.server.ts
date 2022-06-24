@@ -1,5 +1,5 @@
+import type { QueueHandlerFunction } from "../../azure-functions/queue-function.types";
 import { Namespace, write } from "../../server/cache";
-import type { QueueHandlerFunction } from "../../server/queue-function.types";
 import { fromMessage, FromMessageOutcome } from "./home-queue";
 import { homeCacheKey } from "./home-keys";
 

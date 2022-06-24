@@ -1,5 +1,8 @@
-import type { Bindings } from "../../server/function-bindings.types";
-import { httpInBinding, httpOutBinding } from "../../server/http-bindings";
+import type { Bindings } from "../../azure-functions/function-bindings.types";
+import {
+  httpInBinding,
+  httpOutBinding,
+} from "../../azure-functions/http-bindings";
 
 export const bindings: Bindings = [
   httpInBinding({ route: "/static-files/{filename}" }),
