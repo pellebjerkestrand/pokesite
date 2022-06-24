@@ -5,7 +5,7 @@
     "types": []
   },
   "display": "Browser",
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "include": [
     "client/*.ts",
     "components/*.ts",
