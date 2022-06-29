@@ -20,7 +20,7 @@ const config: PlaywrightTestConfig = {
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm start",
+    command: "run-p start storage",
     port: 7071,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
